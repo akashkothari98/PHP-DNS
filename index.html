@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title>Get DNS Data Using PHP</title>
+  </head>
+  <body>
+    <header id="topnav" class="defaultscroll sticky">
+        <nav class="navbar navbar-light bg-light rounded shadow">
+          <div class="container-fluid">
+            <a class="navbar-brand">PHP-DNS Lookup Tool</a>
+            
+          </div>
+        </nav>
+    </header>
+     <section class="d-table w-100 d-print-none" id="home">
+                
+                <div class="container">
+                    <div class="row mt-5 justify-content-center">
+                        <div class="col-12">
+                            <div class="title-heading text-center">
+                                <div class="">
+                                   <div class="card d-print-none m-2 rounded">
+                                    <div class="card-body text-center rounded shadow">
+                                      <form id="getdns" class="row g-3 needs-validation" >
+                                        <div class="col-md-8">
+                                          <div class="input-group form-group position-relative">
+
+                                            <span class="input-group-text rounded shadow" id="basic-addon1">http://</span>
+                                            <input type="text" class="form-control input-lg text-center rounded shadow" name="domain" id="domain" placeholder="example.com" required >
+                                            
+                                            <div class="invalid-feedback">
+                                              Please provide a valid Domain.
+                                            </div>
+                                            <div class="valid-feedback">
+                                              Looks good!
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                          <select id="dtyp" name="type" class="btn btn-secondary text-center rounded shadow">
+                                            <option value="All">All</option>
+                                            <option value="A">A</option>
+                                            <option value="CNAME">CNAME</option>
+                                            <option value="HINFO">HIINFO</option>
+                                            <option value="CAA">CAA</option>
+                                            <option value="MX">MX</option>
+                                            <option value="NS">NS</option>
+                                            <option value="PTR">PTR</option>
+                                            <option value="SOA">SOA</option>
+                                            <option value="TXT">TXT</option>
+                                            <option value="AAAA">AAAA</option>
+                                            <option value="SRV">SRV</option>
+                                            <option value="NAPTR">NAPTR</option>
+                                            <option value="A6">A6</option>
+                                          </select>
+                                          <button class="btn btn-primary rounded shadow" type="submit"><i class="bi bi-box-arrow-in-down"></i> Get DNS Records</button>
+                                        </div>
+                                      </form>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+     <section class="">
+        <div class="container" id="result">
+          
+          <div class="m-2">
+            <div id="msgg"></div>
+            <div id="loader">
+              <div class="d-flex justify-content-center">
+                <div class="spinner-border" role="status">
+                  
+                </div>
+              </div>
+              </div>
+              <div class="d-flex justify-content-center d-print-none">
+                  <button class='btn btn-secondary' id="printbtn" onclick='window.print();' hidden=""><i class="bi bi-printer"></i> Print DNS Records</button>
+                  <button class='btn btn-danger' id="hiddbtn" onclick='togglehid();' hidden=""><i class="bi bi-eye"></i> Show Empty Records</button>
+                </div>
+    <div class="table-responsive">
+            <table id="dnstbl" class="table table-light table-bordered text-dark" hidden="">
+      <thead>
+        <div class="d-none d-print-block">
+          <p class="text-center">DNS Record Provided By 7Hosty</p>
+        </div>
+        <tr>
+          <th class="text-center" scope="col">Record</th>
+          <th class="text-center" scope="col">Class</th>
+          <th class="text-center" scope="col">TTL</th>
+          <th scope="col" id="dfor">Details for </th>
+        </tr>
+      </thead>
+      <tbody id="dnsbd">
+       
+      </tbody>
+      
+    </table>
+    </div>
+          </div>
+          <div class="m-2 d-print-none">
+            <div class="card rounded shadow">
+              <h2 class="h6 card-header text-dark">About PHP-DNS Lookup Tool</h2>
+              <div class="card-body text-muted">
+
+    <p>The <strong class="text-dark">PHP-DNS lookup tool</strong> fetches all the DNS records for a domain and reports them in a priority list.</p>
+    <p>Use options to perform DNS lookup either against Google, Cloudflare, OpenDNS, or the domain's authoritative name server(s). Therefore, if you changed your web hosting or DNS records, those changes should reflect instantly. </p>
+    <p>To check that you have configured correct DNS records for your domain, use the <strong class="text-dark">DNS lookup tool</strong> to verify your DNS records so you can avoid any downtime. The DNS records include A, AAAA, CNAME, MX, NS, PTR, SRV, SOA, TXT, <!-- CAA, DS, DNSKEY, --> and many more. </p>
+    <p>Select <strong class="text-dark">any record</strong> for lookup or select <strong class="text-dark">"ALL"</strong> to get all common DNS records for a domain.</p>
+    <h3 class="h6 text-dark">Different Types of DNS Records</h3>
+    <ol>
+    <li><strong class="text-dark">A record:</strong> the most basic type of record,<strong class="text-dark"> </strong>also known as address record, provides an IPv4 address to a domain name or sub-domain name. That record points the domain name to an IP address.</li>
+    <li><strong class="text-dark">AAAA record:</strong> maps the hostname to 128-bits IPv6 address. For a long time, 32-bits IPv4 addresses served the purpose of identifying a computer on the internet. But due to the shortage of IPv4, IPv6 was created. The four "A" s (AAAA) are mnemonic to represent that IPv6 is four times larger in size than IPv4.</li>
+    <li><strong class="text-dark">CNAME record: </strong>also known as <strong class="text-dark">Canonical Name record</strong>, creates an alias of one domain name. The aliased domain or sub-domain gets all the original Domain's DNS records and is commonly used to associate subdomains with existing main domain.</li>
+    <li><strong class="text-dark">MX record: </strong>also known as <strong class="text-dark">Mail Exchange records</strong>, tells which mail exchange servers are responsible for routing the email to the correct destination or mail server. <!-- For detailed analysis, use <a href="https://dnschecker.org/mx-lookup.php">MX Record Lookup</a> -->.</li>
+    <li><strong class="text-dark">NS record:</strong> also known as <strong class="text-dark">Name Server records, </strong>points<strong class="text-dark"> </strong>to the name servers which have authority in managing and publishing DNS records of that domain. These are the DNS servers that are authoritative to handle any query related to that domain. <!-- Use <a href="https://dnschecker.org/ns-lookup.php">NS Lookup Tool</a> to dig deeper. --></li>
+    <li><strong class="text-dark">PTR record: </strong>also known as <strong class="text-dark">Pointer record, </strong>points the IPv4 or IPv6 address to its machine's hostname. It provides a reverse DNS record, also known as rDNS record, by pointing an IP address to the server's hostname.</li>
+    <li><strong class="text-dark">SRV record:</strong> also known as <strong class="text-dark">Service record,</strong> indicates which specific services the domain operates along with port numbers. Some Internet protocols such as the Extensible Messaging and Presence Protocol (XMPP) and the Session Initiation Protocol (SIP) often require SRV records.</li>
+    <li><strong class="text-dark">SOA record:</strong> also known as <strong class="text-dark">Start of Authority records, </strong>provides essential information about the domain like identifying master node of domain authoritative nameserver, an email of the domain administrator, the serial number of DNS zone, etc.</li>
+    <li><strong class="text-dark">TXT record: </strong>allows the website's administrator to insert any arbitrary text in the DNS record.</li>
+    <li><strong class="text-dark">CAA record:</strong> also known as <strong class="text-dark">Certification Authority Authorization record</strong>, reflects the public policy regarding the issuance of digital certificates for the domain. If no CAA record is present for your domain, any Certification Authority can issue an SSL certificate for your domain. However, by using this record, you can restrict which CA is authorized to issue digital credentials for your domain.</li>
+    
+    </ol>
+    </div>
+            </div>
+          </div>
+        </div>
+    </section>
+    <footer class="p-1 m-2">
+
+          <div class="container-fluid">
+            <span class="float-left">&copy; 2022 PHP-DNS By <a href="https://github.com/akashkothari98" target="_blank">Aakash Kothari</a></span>
+            
+          </div>
+        </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="script.js"></script>
+  </body>
+</html>
